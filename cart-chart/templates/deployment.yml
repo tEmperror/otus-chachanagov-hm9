@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.label }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.label }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.container.name }}
+          image: {{ .Values.deployment.image.repo }}
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          ports:
+            - name: {{ .Values.deployment.container.portName }}
+              containerPort: {{ .Values.deployment.container.port }}
+          env:
+            - name: cart_cache_host
+              valueFrom:
+                secretKeyRef:
+                  name: cart-memcached-secrets
+                  key: cart_cache_host
+            - name: cart_cache_port
+              value: "11211"

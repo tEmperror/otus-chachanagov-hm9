@@ -1,0 +1,50 @@
+replicaCount: 1
+
+deployment:
+  name: warehouse-deployment
+  image:
+    repo: temperror/otus-chachanagov-hm:project-warehouse
+    pullPolicy: Always
+  label: warehouse-app
+  container:
+    name: warehouse-pod
+    portName: web
+    port: 80
+
+service:
+  name: warehouse-service
+  label: warehouse-service-label
+  type: NodePort
+  protocol: TCP
+  portName: service-web
+  port: 8000
+
+ingress:
+  host: arch.homework
+  name: warehouse-ingress
+
+postgresql:
+  fullnameOverride: pg2-db
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+  postgresqlDatabase: postgres
+  service:
+    port: "5432"
+
+auth:
+  service:
+    name: auth-service
+    port: 8000
+  url: /api/auth/auth
+  signin: /api/auth/signin
+  path: /api/client
+
+  catalogServiceName: catalog-service
+  catalogServicePort: 8000
+  catalogServicePath: /api/catalog
+
+  orderServiceName: order-service
+  orderServicePort: 8000
+  orderServicePath: /api/order
+
+  pathType: Prefix

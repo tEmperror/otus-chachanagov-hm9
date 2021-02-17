@@ -1,0 +1,25 @@
+replicaCount: 1
+
+app:
+  changeStatusUrl: http://warehouse-service.crud-app.svc.cluster.local:8000/api/equipment
+deployment:
+  name: delivery-deployment
+  image:
+    repo: temperror/otus-chachanagov-hm:project-delivery
+    pullPolicy: Always
+  label: delivery-app
+  container:
+    name: delivery-pod
+    portName: web
+    port: 80
+
+service:
+  name: delivery-service
+  label: delivery-service-label
+  type: NodePort
+  protocol: TCP
+  portName: service-web
+  port: 8000
+
+rabbitmq:
+  port: 5672

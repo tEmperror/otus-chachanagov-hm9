@@ -1,0 +1,14 @@
+apiVersion: v2
+name: warehouse-chart
+description: A Helm chart for Warehouse
+
+type: application
+version: 0.1.0
+appVersion: v3.0
+
+dependencies:
+  - name: postgresql
+    version: 8.x.x
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - pg-postgresql
