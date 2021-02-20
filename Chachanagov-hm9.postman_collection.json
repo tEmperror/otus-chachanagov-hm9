@@ -1,0 +1,1236 @@
+{
+	"info": {
+		"_postman_id": "ff521fc6-24bd-471f-bee3-996c229f7ee2",
+		"name": "Chachanagov-hm9 Minikube",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Создать клиента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var createdClient = JSON.parse(responseBody);",
+							"",
+							"pm.collectionVariables.set(\"firstClientId\", createdClient.id);",
+							"pm.collectionVariables.set(\"firstClientUsername\", createdClient.username);",
+							"pm.collectionVariables.set(\"firstClientPassword\", createdClient.password);",
+							"pm.collectionVariables.set(\"firstClientPhone\", createdClient.phone);",
+							"pm.collectionVariables.set(\"firstClientFirstName\", createdClient.firstName);",
+							"pm.collectionVariables.set(\"firstClientLastName\", createdClient.lastName);",
+							"pm.collectionVariables.set(\"firstClientEmail\", createdClient.email);",
+							"pm.collectionVariables.set(\"firstClientAddress\", \"AddressExample\");",
+							"",
+							"console.log(createdClient)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"{{$randomUserName}}\",\r\n    \"password\":\"{{$randomPassword}}\",\r\n    \"firstName\":\"{{$randomFirstName}}\",\r\n    \"lastName\":\"{{$randomLastName}}\",\r\n    \"email\":\"{{$randomEmail}}\",\r\n    \"phone\":\"{{$randomPhoneNumber}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Логин",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"clientId\", responseBody);",
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Username",
+						"type": "text",
+						"value": "{{firstClientUsername}}"
+					},
+					{
+						"key": "X-Password",
+						"type": "text",
+						"value": "{{firstClientPassword}}"
+					},
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"king\",\r\n    \"firstName\":\"Charlee\",\r\n    \"lastName\":\"Sheen\",\r\n    \"email\":\"charlee@sheen.com\",\r\n    \"phone\":\"+7 777 777 77 77\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать аккаунт",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/{{firstClientId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"{{firstClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Наличие товаров на складе (Все на месте)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.R8HK8WFCKF).to.eql(10);\r",
+							"  pm.expect(responseJson.AE5022859).to.eql(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/equipment/balance",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"equipment",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание наполнения корзины",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"positionArticle\": \"123\",\r\n        \"pledge\": 100,\r\n        \"dailyCost\": 10,\r\n        \"duration\": 10\r\n    },\r\n    {\r\n        \"positionArticle\": \"123\",\r\n        \"pledge\": 200,\r\n        \"dailyCost\": 20,\r\n        \"duration\": 20\r\n    }        \r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/cart",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить наполнение корзины (Наполнена)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson[0].pledge).to.eql(100);\r",
+							"  pm.expect(responseJson[1].pledge).to.eql(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/cart",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Пополнить счет 100",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}?sum=100",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					],
+					"query": [
+						{
+							"key": "sum",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить текущий баланс (100)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.balance).to.eql(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Разместить заказ (Нет товара на складе)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Нет товара\", () => {\r",
+							"  pm.expect(responseBody).to.eql(\"Model with article = 123 not found\");\r",
+							"});\r",
+							"\r",
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientId\": \"{{firstClientId}}\",\r\n    \"firstName\": \"{{firstClientFirstName}}\",\r\n    \"lastName\": \"{{firstClientLastName}}\",\r\n    \"phoneNumber\": \"{{firstClientPhone}}\",\r\n    \"email\": \"{{firstClientEmail}}\",\r\n    \"address\": \"{{firstClientAddress}}\",\r\n    \"cost\": 40,\r\n    \"deposit\": 10,\r\n    \"version\": 0,\r\n    \"positions\": {\r\n        \"123\": 1,\r\n        \"321\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/order/place",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"order",
+						"place"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Наличие товаров на складе (Все на месте)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.R8HK8WFCKF).to.eql(10);\r",
+							"  pm.expect(responseJson.AE5022859).to.eql(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/equipment/balance",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"equipment",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить наполнение корзины (Наполнена)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson[0].pledge).to.eql(100);\r",
+							"  pm.expect(responseJson[1].pledge).to.eql(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/cart",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить текущий баланс (100)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.balance).to.eql(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Разместить заказ (Не хватит средств)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Не хватает денег\", () => {\r",
+							"  pm.expect(responseBody).to.eql(\"Недостаточно средств на счёте\");\r",
+							"});\r",
+							"\r",
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientId\": \"{{firstClientId}}\",\r\n    \"firstName\": \"{{firstClientFirstName}}\",\r\n    \"lastName\": \"{{firstClientLastName}}\",\r\n    \"phoneNumber\": \"{{firstClientPhone}}\",\r\n    \"email\": \"{{firstClientEmail}}\",\r\n    \"address\": \"{{firstClientAddress}}\",\r\n    \"cost\": 400,\r\n    \"deposit\": 100,\r\n    \"version\": 0,\r\n    \"positions\": {\r\n        \"R8HK8WFCKF\": 1,\r\n        \"AE5022859\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/order/place",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"order",
+						"place"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Наличие товаров на складе (Все на месте)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.R8HK8WFCKF).to.eql(10);\r",
+							"  pm.expect(responseJson.AE5022859).to.eql(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/equipment/balance",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"equipment",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить наполнение корзины (Наполнена)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson[0].pledge).to.eql(100);\r",
+							"  pm.expect(responseJson[1].pledge).to.eql(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/cart",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить текущий баланс (100)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.balance).to.eql(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Пополнить счет 1000",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}?sum=1000",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					],
+					"query": [
+						{
+							"key": "sum",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить текущий баланс (1100)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.balance).to.eql(1100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Разместить заказ (Успешно)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientId\": \"{{firstClientId}}\",\r\n    \"firstName\": \"{{firstClientFirstName}}\",\r\n    \"lastName\": \"{{firstClientLastName}}\",\r\n    \"phoneNumber\": \"{{firstClientPhone}}\",\r\n    \"email\": \"{{firstClientEmail}}\",\r\n    \"address\": \"{{firstClientAddress}}\",\r\n    \"cost\": 400,\r\n    \"deposit\": 100,\r\n    \"version\": 0,\r\n    \"positions\": {\r\n        \"R8HK8WFCKF\": 1,\r\n        \"AE5022859\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/order/place",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"order",
+						"place"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Наличие товаров на складе (Товар зарезервирован)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.R8HK8WFCKF).to.eql(9);\r",
+							"  pm.expect(responseJson.AE5022859).to.eql(8);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/equipment/balance",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"equipment",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить наполнение корзины (Пустая)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Корзина пустая\", () => {\r",
+							"  pm.expect(responseBody).to.eql(\"\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/cart",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверить текущий баланс (700)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Все товары на месте\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.balance).to.eql(700);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "arch.homework",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Client-Id",
+						"value": "{{firstClientId}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/account/balance/{{firstClientId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance",
+						"{{firstClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Выход",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"clientId\", responseBody);",
+							"console.log(responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Host",
+						"type": "text",
+						"value": "arch.homework",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"king\",\r\n    \"firstName\":\"Charlee\",\r\n    \"lastName\":\"Sheen\",\r\n    \"email\":\"charlee@sheen.com\",\r\n    \"phone\":\"+7 777 777 77 77\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/auth/logout",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "arch.homework"
+		},
+		{
+			"key": "firstClientId",
+			"value": ""
+		},
+		{
+			"key": "firstClientPassword",
+			"value": ""
+		},
+		{
+			"key": "firstClientUsername",
+			"value": ""
+		},
+		{
+			"key": "firstClientPhone",
+			"value": ""
+		},
+		{
+			"key": "firstClientFirstName",
+			"value": ""
+		},
+		{
+			"key": "firstClientLastName",
+			"value": ""
+		},
+		{
+			"key": "firstClientEmail",
+			"value": ""
+		},
+		{
+			"key": "firstClientAddress",
+			"value": ""
+		},
+		{
+			"key": "clientId",
+			"value": ""
+		},
+		{
+			"key": "secondClientId",
+			"value": ""
+		},
+		{
+			"key": "secondClientPassword",
+			"value": ""
+		},
+		{
+			"key": "secondClientUsername",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		}
+	]
+}

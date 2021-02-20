@@ -43,12 +43,31 @@ auth:
   billingServicePort: 8000
   billingServicePath: /api/account
 
-  orderServiceName: order-service
-  orderServicePort: 8000
-  orderServicePath: /api/order
+  cartServiceName: cart-service
+  cartServicePort: 8000
+  cartServicePath: /api/cart
+
+  catalogServiceName: catalog-service
+  catalogServicePort: 8000
+  catalogServicePath: /api/catalog
+
+  deliveryServiceName: delivery-service
+  deliveryServicePort: 8000
+  deliveryServicePath: /api/delivery
 
   notificationServiceName: notification-service
   notificationServicePort: 8000
   notificationServicePath: /api/notification
+
+  orderServiceName: order-service
+  orderServicePort: 8000
+  orderServicePath: /api/order
+
+  warehouseServiceName: warehouse-service
+  warehouseServicePort: 8000
+  warehouseBookingServicePath: /api/booking
+  warehouseBrandServicePath: /api/brand
+  warehouseEquipmentServicePath: /api/equipment
+  warehouseModelServicePath: /api/model
 
   pathType: Prefix
